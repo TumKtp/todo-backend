@@ -4,10 +4,16 @@ import "net/http"
 
 var (
 	InvalidStatus = NewAppError(http.StatusBadRequest, 1000)
+	CreateFailed  = NewAppError(http.StatusInternalServerError, 1001)
+	UpdateFailed  = NewAppError(http.StatusInternalServerError, 1002)
+	GetFailed     = NewAppError(http.StatusInternalServerError, 1003)
 )
 
 var ErrorMap = map[int]string{
 	1000: "Invalid status",
+	1001: "Create failed",
+	1002: "Update failed",
+	1003: "Get failed",
 }
 
 type TodoError struct {

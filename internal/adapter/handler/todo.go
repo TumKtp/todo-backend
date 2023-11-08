@@ -62,7 +62,7 @@ func (h *TodoHTTPHandler) ListTodos(c *gin.Context) {
 	description := c.Query("description")
 	todos, err := h.todoService.ListTodos(sort, title, description)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve todos"})
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusOK, todos)
@@ -79,7 +79,7 @@ func (h *TodoHTTPHandler) ListTodos(c *gin.Context) {
 func (h *TodoHTTPHandler) UpdateTodoByID(c *gin.Context) {
 	var todo core.TodoRequest
 	if err := c.ShouldBindJSON(&todo); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 
@@ -92,7 +92,7 @@ func (h *TodoHTTPHandler) UpdateTodoByID(c *gin.Context) {
 		Status:      todo.Status,
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update todo"})
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
