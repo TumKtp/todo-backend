@@ -1,5 +1,6 @@
 /tmp
 /docs
-/database/data
+/out
+/database
 .DS_Store
 .env

@@ -25,7 +25,6 @@ func init() {
 func main() {
 	// Environment config
 	appConfig := config.AppConfig()
-
 	r := gin.Default()
 	postgres.InitDB(appConfig.DatabaseUrl)
 	db := postgres.GetDB()
@@ -46,6 +45,9 @@ func main() {
 			"message": "Hello, World!",
 		})
 	})
-
-	r.Run(":8080")
+	port := appConfig.Port
+	if port == "" {
+		port = "8080"
+	}
+	r.Run(":" + port)
 }

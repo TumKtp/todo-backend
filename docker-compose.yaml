@@ -1,0 +1,36 @@
+version: '3.8'
+
+networks:
+  my-network:
+
+services:
+  db:
+    container_name: pg_container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: todo
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    networks:
+      - my-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-go-app
+    restart: always
+    environment:
+      - PORT=8080
+      - DATABASE_URL=host=db user=root dbname=todo password=root sslmode=disable
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - db
