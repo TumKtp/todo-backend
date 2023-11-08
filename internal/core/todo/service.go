@@ -28,7 +28,7 @@ func (s *todoService) CreateNewTodo(todo *TodoRequest) (*Todo, error) {
 	return result, nil
 }
 
-func (s *todoService) UpdateTodo(id string, todo *TodoRequest) (*TodoRequest, error) {
+func (s *todoService) UpdateTodo(id string, todo *TodoRequest) (*Todo, error) {
 	result, err := s.repo.UpdateTodo(id, todo)
 	if err != nil {
 		return nil, err

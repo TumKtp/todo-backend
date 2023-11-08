@@ -54,20 +54,28 @@ func (r *TodoPgRepository) SaveTodo(todo *core.TodoRequest) (*core.Todo, error) 
 	}, nil
 }
 
-func (r *TodoPgRepository) UpdateTodo(id string, todo *core.TodoRequest) (*core.TodoRequest, error) {
-	ID, err := uuid.Parse(id)
-	if err != nil {
-		return nil, err
-	}
-	err = r.db.Model(&Todo{}).Where("id = ?", ID).Updates(&Todo{
+func (r *TodoPgRepository) UpdateTodo(id string, todo *core.TodoRequest) (*core.Todo, error) {
+	newTodo := &Todo{
 		Title:       todo.Title,
 		Description: todo.Description,
 		Image:       todo.Image,
 		Status:      todo.Status,
-	}).Error
+	}
+
+	ID, err := uuid.Parse(id)
+	if err != nil {
+		return nil, err
+	}
+	err = r.db.Model(&Todo{}).Where("id = ?", ID).Updates(newTodo).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return todo, nil
+	return &core.Todo{
+		ID:          id,
+		Title:       newTodo.Title,
+		Description: newTodo.Description,
+		Image:       newTodo.Image,
+		Status:      newTodo.Status,
+	}, nil
 }

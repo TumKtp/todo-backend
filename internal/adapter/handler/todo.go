@@ -70,7 +70,7 @@ func (h *TodoHTTPHandler) ListTodos(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Task ID"
-// @Param input body core.Todo true "Task details"
+// @Param input body core.TodoRequest true "Task details"
 // @Success 200 {object} core.Todo
 // @Router /todos/{id} [put]
 func (h *TodoHTTPHandler) UpdateTodoByID(c *gin.Context) {
