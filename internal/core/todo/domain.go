@@ -1,5 +1,7 @@
 package todo
 
+import "time"
+
 type Status string
 
 const (
@@ -8,11 +10,12 @@ const (
 )
 
 type Todo struct {
-	ID          string `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Image       string `json:"image"`
-	Status      Status `json:"status"`
+	ID          string    `json:"id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	Image       string    `json:"image"`
+	Status      Status    `json:"status"`
+	CreatedAt   time.Time `json:"createdAt"`
 }
 
 type TodoRequest struct {

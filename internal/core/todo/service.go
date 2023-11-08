@@ -10,8 +10,8 @@ func NewTodoService(repo TodoRepository) *todoService {
 	}
 }
 
-func (s *todoService) ListTodos() ([]*Todo, error) {
-	result, err := s.repo.GetTodos()
+func (s *todoService) ListTodos(sort, title, description string) ([]*Todo, error) {
+	result, err := s.repo.GetTodos(sort, title, description)
 	if err != nil {
 		return nil, err
 	}

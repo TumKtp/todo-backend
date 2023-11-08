@@ -17,16 +17,31 @@ func NewTodoPgRepository(db *gorm.DB) *TodoPgRepository {
 	}
 }
 
-func (r *TodoPgRepository) GetTodos() ([]*core.Todo, error) {
+func (r *TodoPgRepository) GetTodos(sort, title, description string) ([]*core.Todo, error) {
 	var todos []*core.Todo
-	err := r.db.Find(&todos).Error
-	if err != nil {
+	query := r.db.Model(&Todo{})
+	switch sort {
+	case "title":
+		query = query.Order("title")
+	case "date":
+		query = query.Order("created_at")
+	case "status":
+		query = query.Order("status")
+	default:
+		query = query.Order("id")
+	}
+
+	query = query.Where("title LIKE ?", "%"+title+"%")
+	query = query.Where("description LIKE ?", "%"+description+"%")
+
+	// Execute the query and retrieve todos
+	err := query.Find(&todos).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
 
 	return todos, nil
 }
-
 func (r *TodoPgRepository) SaveTodo(todo *core.TodoRequest) (*core.Todo, error) {
 	newTodo := &Todo{
 		Title:       todo.Title,
@@ -51,6 +66,7 @@ func (r *TodoPgRepository) SaveTodo(todo *core.TodoRequest) (*core.Todo, error) 
 		Description: newTodo.Description,
 		Image:       newTodo.Image,
 		Status:      newTodo.Status,
+		CreatedAt:   newTodo.CreatedAt,
 	}, nil
 }
 

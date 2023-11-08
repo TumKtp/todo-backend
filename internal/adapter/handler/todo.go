@@ -57,7 +57,10 @@ func (h *TodoHTTPHandler) CreateNewTodo(c *gin.Context) {
 // @Success 200 {array} core.Todo
 // @Router /todos [get]
 func (h *TodoHTTPHandler) ListTodos(c *gin.Context) {
-	todos, err := h.todoService.ListTodos()
+	sort := c.Query("sort")
+	title := c.Query("title")
+	description := c.Query("description")
+	todos, err := h.todoService.ListTodos(sort, title, description)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve todos"})
 		return

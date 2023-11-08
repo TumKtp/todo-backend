@@ -1,13 +1,13 @@
 package todo
 
 type TodoService interface {
-	ListTodos() ([]*Todo, error)
+	ListTodos(sort, title, description string) ([]*Todo, error)
 	CreateNewTodo(todo *TodoRequest) (*Todo, error)
 	UpdateTodo(id string, todo *TodoRequest) (*Todo, error)
 }
 
 type TodoRepository interface {
-	GetTodos() ([]*Todo, error)
+	GetTodos(sort, title, description string) ([]*Todo, error)
 	SaveTodo(todo *TodoRequest) (*Todo, error)
 	UpdateTodo(id string, todo *TodoRequest) (*Todo, error)
 }
